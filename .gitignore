@@ -1,0 +1,62 @@
+HELP.md
+target/
+.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+### Secrets / Credentials ###
+*.pem
+*.key
+*.p12
+*.jks
+*.sso
+.env
+.env.*
+wallet/
+Wallet_*
+*Wallet*
+*.zip
+
+### Oracle Wallet ###
+tnsnames.ora
+sqlnet.ora
+ojdbc.properties
+cwallet.sso
+ewallet.p12
+ewallet.pem
+keystore.jks
+truststore.jks
+
+### Logs ###
+*.log
+
+### Docker local overrides ###
+docker-compose.override.yml
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### VS Code ###
+.vscode/
