@@ -8,12 +8,19 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/inscripciones")
 @RequiredArgsConstructor
 public class InscripcionController {
 
     private final InscripcionService inscripcionService;
+
+    @GetMapping
+    public List<InscripcionResponse> listarInscripciones() {
+        return inscripcionService.listarInscripciones();
+    }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
