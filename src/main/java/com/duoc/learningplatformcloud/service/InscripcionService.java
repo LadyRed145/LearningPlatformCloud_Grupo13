@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
@@ -22,6 +23,15 @@ public class InscripcionService {
 
     private final CursoRepository cursoRepository;
     private final InscripcionRepository inscripcionRepository;
+
+    @Transactional(readOnly = true)
+    public List<InscripcionResponse> listarInscripciones() {
+        return inscripcionRepository.findAll()
+                .stream()
+                .sorted(Comparator.comparing(Inscripcion::getId))
+                .map(this::mapearInscripcionResponse)
+                .toList();
+    }
 
     @Transactional
     public InscripcionResponse inscribirEstudiante(InscripcionRequest request) {
