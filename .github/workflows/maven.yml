@@ -6,8 +6,15 @@ on:
       - main
 
 jobs:
-  build-push-deploy: 
+  build-push-deploy:
     runs-on: ubuntu-latest
+
+    env:
+      DB_URL: ${{ secrets.DB_URL }}
+      DB_USERNAME: ${{ secrets.DB_USERNAME }}
+      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+      AWS_REGION: ${{ secrets.AWS_REGION }}
+      AWS_S3_BUCKET_NAME: ${{ secrets.AWS_S3_BUCKET_NAME }}
 
     steps:
       - name: Checkout repository
@@ -46,11 +53,7 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             cd ~/learningplatformcloud
-
             docker compose pull
-
             docker compose down
-
             docker compose up -d
-
             docker image prune -f
