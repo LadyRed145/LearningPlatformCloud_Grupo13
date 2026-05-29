@@ -20,13 +20,14 @@
     <name>Learning Platform Cloud</name>
     <description>
         Microservicio Cloud Native para gestión de cursos e inscripciones,
-        desarrollado con Spring Boot, Oracle Cloud, Docker y CI/CD mediante GitHub Actions.
+        desarrollado con Spring Boot, Oracle Cloud, AWS S3, Docker y CI/CD mediante GitHub Actions.
     </description>
 
     <properties>
         <java.version>17</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <oracle.jdbc.version>23.3.0.23.09</oracle.jdbc.version>
+        <aws.sdk.version>2.25.60</aws.sdk.version>
     </properties>
 
     <dependencies>
@@ -53,6 +54,13 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+
+        <!-- AWS SDK S3 -->
+        <dependency>
+            <groupId>software.amazon.awssdk</groupId>
+            <artifactId>s3</artifactId>
+            <version>${aws.sdk.version}</version>
         </dependency>
 
         <!-- Oracle JDBC Driver -->
