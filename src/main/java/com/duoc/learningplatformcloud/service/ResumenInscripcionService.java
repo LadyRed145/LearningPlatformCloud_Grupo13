@@ -28,7 +28,46 @@ public class ResumenInscripcionService {
     @Transactional(readOnly = true)
     public Path generarArchivoResumen(Long inscripcionId) {
         Inscripcion inscripcion = buscarInscripcion(inscripcionId);
-        String contenido = construirContenidoResumen(inscripcion);
+
+        String contenido = construirContenidoResumen(inscripcion)
+                + System.lineSeparator()
+                + "EVENTO DEL ENDPOINT"
+                + System.lineSeparator()
+                + "=================="
+                + System.lineSeparator()
+                + "Acción ejecutada: GENERAR ARCHIVO LOCAL"
+                + System.lineSeparator()
+                + "Endpoint: POST /api/resumenes/" + inscripcion.getId() + "/generar"
+                + System.lineSeparator()
+                + "Fecha del evento: " + LocalDateTime.now().format(FORMATO_FECHA)
+                + System.lineSeparator()
+                + "Estado: Archivo físico generado localmente antes de subirlo a AWS S3."
+                + System.lineSeparator();
+
+        return escribirArchivo(inscripcion.getId(), contenido);
+    }
+
+    @Transactional(readOnly = true)
+    public Path generarArchivoResumenParaSubida(Long inscripcionId) {
+        Inscripcion inscripcion = buscarInscripcion(inscripcionId);
+
+        String contenido = construirContenidoResumen(inscripcion)
+                + System.lineSeparator()
+                + "EVENTO DEL ENDPOINT"
+                + System.lineSeparator()
+                + "=================="
+                + System.lineSeparator()
+                + "Acción ejecutada: SUBIR ARCHIVO A AWS S3"
+                + System.lineSeparator()
+                + "Endpoint: POST /api/resumenes/" + inscripcion.getId() + "/upload"
+                + System.lineSeparator()
+                + "Fecha del evento: " + LocalDateTime.now().format(FORMATO_FECHA)
+                + System.lineSeparator()
+                + "Estado: Archivo cargado correctamente en AWS S3."
+                + System.lineSeparator()
+                + "Evidencia: El objeto Resumen_" + inscripcion.getId()
+                + ".txt fue creado o sobrescrito en el bucket configurado."
+                + System.lineSeparator();
 
         return escribirArchivo(inscripcion.getId(), contenido);
     }
@@ -43,24 +82,23 @@ public class ResumenInscripcionService {
 
         String contenido = construirContenidoResumen(inscripcion)
                 + System.lineSeparator()
-                + "ACTUALIZACIÓN DEL RESUMEN"
+                + "EVENTO DEL ENDPOINT"
                 + System.lineSeparator()
-                + "========================"
+                + "=================="
                 + System.lineSeparator()
-                + "Fecha de actualización: "
-                + LocalDateTime.now().format(FORMATO_FECHA)
+                + "Acción ejecutada: ACTUALIZAR ARCHIVO EN AWS S3"
                 + System.lineSeparator()
-                + "Origen del cambio: Endpoint PUT /api/resumenes/"
-                + inscripcion.getId()
-                + "/upload"
+                + "Endpoint: PUT /api/resumenes/" + inscripcion.getId() + "/upload"
                 + System.lineSeparator()
-                + "Observación: "
-                + observacion
+                + "Fecha del evento: " + LocalDateTime.now().format(FORMATO_FECHA)
                 + System.lineSeparator()
-                + "Contenido extra: "
-                + contenidoExtra
+                + "Observación: " + observacion
+                + System.lineSeparator()
+                + "Contenido extra: " + contenidoExtra
                 + System.lineSeparator()
                 + "Estado: Archivo modificado y sobrescrito realmente en AWS S3."
+                + System.lineSeparator()
+                + "Evidencia: El contenido descargado desde S3 debe mostrar esta actualización."
                 + System.lineSeparator();
 
         return escribirArchivo(inscripcion.getId(), contenido);

@@ -32,7 +32,8 @@ public class ResumenController {
         return ResponseEntity.status(HttpStatus.CREATED).body(Map.of(
                 "mensaje", "Archivo físico del resumen generado correctamente.",
                 "inscripcionId", id,
-                "archivo", archivo.toString()
+                "archivo", archivo.toString(),
+                "accion", "GENERAR_LOCAL"
         ));
     }
 
@@ -40,7 +41,7 @@ public class ResumenController {
     public ResponseEntity<Map<String, Object>> subirResumen(@PathVariable Long inscripcionId) {
         Long id = Objects.requireNonNull(inscripcionId, "El ID de inscripción no puede ser nulo.");
 
-        Path archivo = resumenInscripcionService.generarArchivoResumen(id);
+        Path archivo = resumenInscripcionService.generarArchivoResumenParaSubida(id);
         String key = s3ResumenService.subirResumen(id, archivo);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(Map.of(
@@ -59,10 +60,10 @@ public class ResumenController {
         Long id = Objects.requireNonNull(inscripcionId, "El ID de inscripción no puede ser nulo.");
 
         String observacion = obtenerValorBody(body, "observacion",
-                "Resumen actualizado correctamente desde endpoint PUT.");
+                "Archivo actualizado desde API Gateway usando JWT.");
 
         String contenidoExtra = obtenerValorBody(body, "contenidoExtra",
-                "Cambio aplicado para demostrar actualización real del archivo en AWS S3.");
+                "Este cambio demuestra que el PUT modifica el contenido real almacenado en AWS S3.");
 
         Path archivoActualizado = resumenInscripcionService.generarArchivoResumenActualizado(
                 id,
