@@ -46,21 +46,38 @@ public class ResumenController {
         return ResponseEntity.status(HttpStatus.CREATED).body(Map.of(
                 "mensaje", "Resumen subido correctamente a AWS S3.",
                 "inscripcionId", id,
-                "s3Key", key
+                "s3Key", key,
+                "accion", "UPLOAD_INICIAL"
         ));
     }
 
     @PutMapping("/{inscripcionId}/upload")
-    public ResponseEntity<Map<String, Object>> actualizarResumen(@PathVariable Long inscripcionId) {
+    public ResponseEntity<Map<String, Object>> actualizarResumen(
+            @PathVariable Long inscripcionId,
+            @RequestBody(required = false) Map<String, Object> body
+    ) {
         Long id = Objects.requireNonNull(inscripcionId, "El ID de inscripción no puede ser nulo.");
 
-        Path archivo = resumenInscripcionService.generarArchivoResumen(id);
-        String key = s3ResumenService.actualizarResumen(id, archivo);
+        String observacion = obtenerValorBody(body, "observacion",
+                "Resumen actualizado correctamente desde endpoint PUT.");
+
+        String contenidoExtra = obtenerValorBody(body, "contenidoExtra",
+                "Cambio aplicado para demostrar actualización real del archivo en AWS S3.");
+
+        Path archivoActualizado = resumenInscripcionService.generarArchivoResumenActualizado(
+                id,
+                observacion,
+                contenidoExtra
+        );
+
+        String key = s3ResumenService.actualizarResumen(id, archivoActualizado);
 
         return ResponseEntity.ok(Map.of(
                 "mensaje", "Resumen actualizado correctamente en AWS S3.",
                 "inscripcionId", id,
-                "s3Key", key
+                "s3Key", key,
+                "accion", "UPDATE_REAL_CONTENIDO",
+                "observacion", observacion
         ));
     }
 
@@ -73,7 +90,7 @@ public class ResumenController {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.TEXT_PLAIN);
-        headers.setContentDisposition(ContentDisposition.attachment()
+        headers.setContentDisposition(ContentDisposition.inline()
                 .filename(nombreArchivo)
                 .build());
 
@@ -88,7 +105,18 @@ public class ResumenController {
 
         return ResponseEntity.ok(Map.of(
                 "mensaje", "Resumen eliminado correctamente desde AWS S3.",
-                "inscripcionId", id
+                "inscripcionId", id,
+                "accion", "DELETE_S3"
         ));
+    }
+
+    private String obtenerValorBody(Map<String, Object> body, String clave, String valorPorDefecto) {
+        if (body == null || !body.containsKey(clave) || body.get(clave) == null) {
+            return valorPorDefecto;
+        }
+
+        String valor = body.get(clave).toString().trim();
+
+        return valor.isBlank() ? valorPorDefecto : valor;
     }
 }

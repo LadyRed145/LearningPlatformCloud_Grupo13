@@ -10,6 +10,7 @@ import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.*;
 
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Objects;
 
@@ -17,7 +18,7 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class S3ResumenService {
 
-    private static final String CONTENT_TYPE_TEXT = "text/plain";
+    private static final String CONTENT_TYPE_TEXT = "text/plain; charset=utf-8";
 
     private final S3Client s3Client;
 
@@ -117,6 +118,14 @@ public class S3ResumenService {
 
         if (archivoResumen == null) {
             throw new IllegalArgumentException("El archivo del resumen no puede ser nulo.");
+        }
+
+        if (!Files.exists(archivoResumen)) {
+            throw new IllegalArgumentException("El archivo del resumen no existe: " + archivoResumen);
+        }
+
+        if (!Files.isRegularFile(archivoResumen)) {
+            throw new IllegalArgumentException("La ruta indicada no corresponde a un archivo válido: " + archivoResumen);
         }
     }
 

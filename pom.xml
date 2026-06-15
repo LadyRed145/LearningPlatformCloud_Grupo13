@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
-         https://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-    <modelVersion>4.0.0</modelVersion> 
+    <modelVersion>4.0.0</modelVersion>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId> 
-        <version>3.5.14</version>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.5.15</version>
         <relativePath/>
     </parent>
 
@@ -20,7 +19,8 @@
     <name>Learning Platform Cloud</name>
     <description>
         Microservicio Cloud Native para gestión de cursos e inscripciones,
-        desarrollado con Spring Boot, Oracle Cloud, AWS S3, Docker y CI/CD mediante GitHub Actions.
+        desarrollado con Spring Boot, Oracle Cloud, AWS S3, Docker, AWS API Gateway,
+        Azure AD B2C y CI/CD mediante GitHub Actions.
     </description>
 
     <properties>

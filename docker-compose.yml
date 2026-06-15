@@ -2,14 +2,14 @@ services:
   learningplatformcloud:
     image: ladyred/learningplatformcloud:latest
     container_name: learningplatformcloud
-
     ports:
       - "8081:8080"
-
-    env_file:
-      - .env
-
+    environment:
+      DB_URL: 'jdbc:oracle:thin:@semana1_high?TNS_ADMIN=/app/wallet'
+      DB_USERNAME: 'ADMIN'
+      DB_PASSWORD: 'OracleCloud123'
+      AWS_REGION: 'us-east-1'
+      AWS_S3_BUCKET_NAME: 'learningplatformcloud-grupo13'
     volumes:
-      - /home/natalia/oracle-wallets/semana1:/app/wallet:ro
-
+      - "/home/natalia/Archivos/Desarrollo Cloud Native/Wallets Registradas/Wallet_Semana1:/app/wallet:ro"
     restart: "no"
